@@ -132,7 +132,7 @@ namespace File {
 }  // namespace File
 
 namespace file {
-  int Defaults() { }
+  int Defaults() { return 0; }
 
   class DummyStatus {
    public:
@@ -158,6 +158,7 @@ namespace file {
     }
 
     fclose(fp);
+    return DummyStatus();
   }
 
   DummyStatus SetContents(const string& filename,
@@ -176,6 +177,7 @@ namespace file {
     }
 
     fclose(fp);
+    return DummyStatus();
   }
 }  // namespace file
 

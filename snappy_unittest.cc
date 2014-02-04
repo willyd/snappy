@@ -161,6 +161,7 @@ static size_t MinimumRequiredOutputSpace(size_t input_size,
 
     default:
       LOG(FATAL) << "Unknown compression type number " << comp;
+      return 0;
   }
 }
 

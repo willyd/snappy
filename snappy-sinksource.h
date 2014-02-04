@@ -31,17 +31,18 @@
 
 #include <stddef.h>
 
+#include "snappy-stubs-public.h"
 
 namespace snappy {
 
 // A Sink is an interface that consumes a sequence of bytes.
 class Sink {
  public:
-  Sink() { }
-  virtual ~Sink();
+  SNAPPY_EXPORT Sink() { }
+  SNAPPY_EXPORT virtual ~Sink();
 
   // Append "bytes[0,n-1]" to this.
-  virtual void Append(const char* bytes, size_t n) = 0;
+  SNAPPY_EXPORT virtual void Append(const char* bytes, size_t n) = 0;
 
   // Returns a writable buffer of the specified length for appending.
   // May return a pointer to the caller-owned scratch buffer which
@@ -58,7 +59,7 @@ class Sink {
   // interior pointer of the returned array to Append().
   //
   // The default implementation always returns the scratch buffer.
-  virtual char* GetAppendBuffer(size_t length, char* scratch);
+  SNAPPY_EXPORT virtual char* GetAppendBuffer(size_t length, char* scratch);
 
 
  private:
@@ -70,8 +71,8 @@ class Sink {
 // A Source is an interface that yields a sequence of bytes
 class Source {
  public:
-  Source() { }
-  virtual ~Source();
+  SNAPPY_EXPORT Source() { }
+  SNAPPY_EXPORT virtual ~Source();
 
   // Return the number of bytes left to read from the source
   virtual size_t Available() const = 0;
@@ -89,12 +90,12 @@ class Source {
   // if this ByteSource is a view on a substring of a larger source).
   // The caller is responsible for ensuring that it only reads the
   // Available() bytes.
-  virtual const char* Peek(size_t* len) = 0;
+ SNAPPY_EXPORT  virtual const char* Peek(size_t* len) = 0;
 
   // Skip the next n bytes.  Invalidates any buffer returned by
   // a previous call to Peek().
   // REQUIRES: Available() >= n
-  virtual void Skip(size_t n) = 0;
+  SNAPPY_EXPORT virtual void Skip(size_t n) = 0;
 
  private:
   // No copying
@@ -105,11 +106,11 @@ class Source {
 // A Source implementation that yields the contents of a flat array
 class ByteArraySource : public Source {
  public:
-  ByteArraySource(const char* p, size_t n) : ptr_(p), left_(n) { }
-  virtual ~ByteArraySource();
-  virtual size_t Available() const;
-  virtual const char* Peek(size_t* len);
-  virtual void Skip(size_t n);
+  SNAPPY_EXPORT ByteArraySource(const char* p, size_t n) : ptr_(p), left_(n) { }
+  SNAPPY_EXPORT virtual ~ByteArraySource();
+  SNAPPY_EXPORT virtual size_t Available() const;
+  SNAPPY_EXPORT virtual const char* Peek(size_t* len);
+  SNAPPY_EXPORT virtual void Skip(size_t n);
  private:
   const char* ptr_;
   size_t left_;
@@ -118,15 +119,15 @@ class ByteArraySource : public Source {
 // A Sink implementation that writes to a flat array without any bound checks.
 class UncheckedByteArraySink : public Sink {
  public:
-  explicit UncheckedByteArraySink(char* dest) : dest_(dest) { }
-  virtual ~UncheckedByteArraySink();
-  virtual void Append(const char* data, size_t n);
-  virtual char* GetAppendBuffer(size_t len, char* scratch);
+  SNAPPY_EXPORT explicit UncheckedByteArraySink(char* dest) : dest_(dest) { }
+  SNAPPY_EXPORT virtual ~UncheckedByteArraySink();
+  SNAPPY_EXPORT virtual void Append(const char* data, size_t n);
+  SNAPPY_EXPORT virtual char* GetAppendBuffer(size_t len, char* scratch);
 
   // Return the current output pointer so that a caller can see how
   // many bytes were produced.
   // Note: this is not a Sink method.
-  char* CurrentDestination() const { return dest_; }
+  SNAPPY_EXPORT char* CurrentDestination() const { return dest_; }
  private:
   char* dest_;
 };
