@@ -24,6 +24,7 @@ CHECK_INCLUDE_FILES(string.h HAVE_STRING_H)
 CHECK_INCLUDE_FILES(sys/byteswap.h HAVE_SYS_BYTESWAP_H)
 CHECK_INCLUDE_FILES(sys/endian.h HAVE_SYS_ENDIAN_H)
 CHECK_INCLUDE_FILES(sys/mman.h HAVE_SYS_MMAN_H)
+CHECK_INCLUDE_FILES(sys/mman.h HAVE_FUNC_MMAP)
 CHECK_INCLUDE_FILES(sys/resource.h HAVE_SYS_RESOURCE_H)
 CHECK_INCLUDE_FILES(sys/stat.h HAVE_SYS_STAT_H)
 CHECK_INCLUDE_FILES(sys/time.h HAVE_SYS_TIME_H)
@@ -49,6 +50,14 @@ if(ZLIB_FOUND)
     set(HAVE_LIBZ 1)
     set(TEST_INCLUDES ${TEST_INCLUDES}  ${ZLIB_INCLUDE_DIRS})
 endif()
+
+# TODO: port discovery of the following libraries from configure.ac:
+# CHECK_EXT_COMPRESSION_LIB([lzo2], [lzo1x_1_15_compress])
+# CHECK_EXT_COMPRESSION_LIB([lzf], [lzf_compress])
+# CHECK_EXT_COMPRESSION_LIB([fastlz], [fastlz_compress])
+# CHECK_EXT_COMPRESSION_LIB([quicklz], [qlz_compress])
+# GFLAGS
+# GTEST
 
 CONFIGURE_FILE(cmake/config.h.cmake ${CMAKE_BINARY_DIR}/config.h)
 CONFIGURE_FILE(cmake/snappy-stubs-public.h.cmake ${PROJECT_SOURCE_DIR}/snappy-stubs-public.h @ONLY)

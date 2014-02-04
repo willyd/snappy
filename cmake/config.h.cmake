@@ -43,6 +43,9 @@
 /* Define to 1 if you have the <sys/mman.h> header file. */
 #cmakedefine HAVE_SYS_MMAN_H 1
 
+/* Define to 1 if you have the <sys/mman.h> header file. */
+#cmakedefine HAVE_FUNC_MMAP 1
+
 /* Define to 1 if you have the <sys/resource.h> header file. */
 #cmakedefine HAVE_SYS_RESOURCE_H 1
 
