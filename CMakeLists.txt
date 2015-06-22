@@ -5,6 +5,7 @@ PROJECT(snappy)
 set(SNAPPY_MAJOR 1)
 set(SNAPPY_MINOR 1)
 set(SNAPPY_PATCHLEVEL 1)
+set(SNAPPY_VERSION "${SNAPPY_MAJOR}.${SNAPPY_MINOR}.${SNAPPY_PATCHLEVEL}")
 
 ############ configure ################
 
@@ -49,6 +50,8 @@ find_package (ZLIB)
 if(ZLIB_FOUND)
     set(HAVE_LIBZ 1)
     set(TEST_INCLUDES ${TEST_INCLUDES}  ${ZLIB_INCLUDE_DIRS})
+else()
+    set(HAVE_LIBZ 0)
 endif()
 
 # TODO: port discovery of the following libraries from configure.ac:
@@ -97,6 +100,23 @@ add_test(NAME snappy_test WORKING_DIRECTORY ${PROJECT_SOURCE_DIR} COMMAND snappy
 INSTALL(FILES snappy.h snappy-stubs-public.h
         DESTINATION include)
 INSTALL(TARGETS snappy snappy_static
+        EXPORT snappy-targets
         RUNTIME DESTINATION bin 
         LIBRARY DESTINATION lib 
         ARCHIVE DESTINATION lib)
+        
+include(CMakePackageConfigHelpers)
+
+set(INSTALL_INCLUDE_DIR include)
+configure_package_config_file(${CMAKE_CURRENT_SOURCE_DIR}/cmake/package-config.cmakein ${CMAKE_CURRENT_BINARY_DIR}/snappy-config.cmake
+                              INSTALL_DESTINATION CMake
+                              PATH_VARS INSTALL_INCLUDE_DIR
+                              )
+       
+write_basic_package_version_file( ${CMAKE_CURRENT_BINARY_DIR}/snappy-config-version.cmake VERSION ${SNAPPY_VERSION} COMPATIBILITY SameMajorVersion )
+
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/snappy-config.cmake ${CMAKE_CURRENT_BINARY_DIR}/snappy-config-version.cmake
+        DESTINATION CMake )
+
+
+install(EXPORT snappy-targets DESTINATION CMake)        
